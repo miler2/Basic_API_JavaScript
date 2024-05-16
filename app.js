@@ -10,7 +10,7 @@ const ordersRoutes = require('./api/routes/orders');
 
 // Conexión con la base de datos (hace falta la dependencia mariabd)
 const pool = mariadb.createPool({
-    host: localhost,
+    host: 'localhost',
     user: 'miler',
     password: ''
 });
@@ -26,6 +26,7 @@ app.use(morgan('dev'));
 // Elegimos qué es lo que vamos a parsear, en este caso urls y json
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(bodyParser.json());
+
 
 // CORS
 /*
@@ -44,9 +45,11 @@ app.use((req, res, next) => {
     next();
 });
 
+
 // Rutas
 app.use('/products', productRoutes);
 app.use('/orders', ordersRoutes);
+
 
 // Error handling 
 /* Si no se han usado ni la ruta /orders, ni la ruta /products, entonces este código se ejecutará. De lo contrario no se mostrará este mensaje de error.
