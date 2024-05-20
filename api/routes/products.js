@@ -15,21 +15,37 @@ const pool = mariadb.createPool({
 
 // Route file
 router.get('/', async (req, res, next) => {
-    const connection = await pool.getConnection();
-    const rows = await connection.query(`SELECT * FROM productos`);
-    connection.release();
-    res.json(rows);
 
-    /* res.status(200).json({
-        message: 'We are at /products page with GET',
-        product: product
-    }); */
+    try {
+        const connection = await pool.getConnection();
+        const rows = await connection.query(`SELECT * FROM productos`);
+        connection.release();
+        res.status(200).json(rows);
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error connecting to database' });
+    }
 });
 
-router.post('/', (req, res, next) => {
-    res.status(201).json({
-        message: 'We are at /products page with POST'
+router.post('/', async (req, res, next) => {
+    const product = new Product({
+        nombre: req.body.nombre,
+        descripcion: req.body.descripcion,
+        precio: req.body.precio,
+        stock: req.body.stock
     })
+
+    try {
+        const connection = await pool.getConnection();
+        const rows = await connection.query(`INSERT INTO productos VALUES(NULL, "${product.nombre}", "${product.descripcion}", ${product.precio}, ${product.stock})`);
+        connection.release();
+        res.status(200).json({
+            message: 'El producto se ha añadido correctamente'
+        });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error adding products to database' });
+    }
 });
 
 
