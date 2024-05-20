@@ -61,14 +61,14 @@ Aquí estoy demostrando cómo usar una API desde cero, con una base de datos pro
     Can be installed with the command:
 
     ```
-    npm install sequelize sqlite3
+    npm install sequelize
     ```
 
  
 All these dependencies can be installed with one single command:
 
 ```
-npm install express morgan body-parser nodemon mariadb --save
+npm install express morgan body-parser nodemon mariadb sequelize --save
 ```
 
  
