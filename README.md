@@ -1,5 +1,5 @@
 # Basic API with node.js
-Aquí estoy demostrando cómo usar una API desde cero, con una base de datos propia y otras dependencias importantes.
+Este proyecto sirve como referencia para futuros proyectos de API que utilizen node.js y javascript. Aunque JavaScript también está soportado por Typescript, por lo que un proyecto de typescript puede ser igual o parecido a éste.
 
 
 ## Dependencies
