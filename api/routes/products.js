@@ -15,7 +15,6 @@ const pool = mariadb.createPool({
 
 // Route file
 router.get('/', async (req, res, next) => {
-
     try {
         const connection = await pool.getConnection();
         const rows = await connection.query(`SELECT * FROM productos`);
@@ -50,17 +49,22 @@ router.post('/', async (req, res, next) => {
 
 
 // Con id
-router.get('/:id', (req, res, next) => {
+router.get('/:id', async (req, res, next) => {
     const id = req.params.id;
-    if (id === 'special') {
-        res.status(200).json({
-            message: 'You discovered the special ID!',
-            id: id
-        });
-    } else {
-        res.status(200).json({
-            message: 'You passed an ID'
-        });
+    
+    try {
+        const connection = await pool.getConnection();
+        const rows = await connection.query(`SELECT * FROM productos WHERE id=${id}`);
+        connection.release();
+        if (rows) {
+            res.status(200).json(rows);
+        } else {
+            res.status(404).json({message: 'The product selected does not exist'})
+        }
+        
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Error connecting to database' });
     }
 });
 
